@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/DOstyles.css">
+  </head>
+<body class="bgimg">
+    <div class="barbox">
+      <div class="colorbars">
+        <a href=""> <img class="coverart" src="css/images/RET001.jpg"/></a>
+      </div>
+  </div>
+
+<pre class="output"></pre>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Background Switcher -->
+<script src="js/bgswitcher.js"></script>
+
+<!-- Device Orientation Script -->
+<script type="text/javascript">
+$(document).ready(function(){
+
+var colorbars = document.querySelector('.colorbars');
+var barbox = document.querySelector('.barbox');
+var output = document.querySelector('.output');
+var maxX = barbox.clientWidth  - colorbars.clientWidth;
+var maxY = barbox.clientHeight - colorbars.clientHeight;
+
+
+  window.addEventListener('deviceorientation', function handleOrientation(event) {
+
+  var x = event.beta;
+  var y = event.gamma;
+
+  output.innerHTML  = "beta : " + x + "\n";
+  output.innerHTML += "gamma: " + y + "\n";
+
+  if (x >  90) { x =  90};
+  if (x < -90) { x = -90};
+
+
+  x += 90;
+  y += 90;
+
+  colorbars.style.top  = (maxX*x/180 - 10) + "px";
+  colorbars.style.left = (maxY*y/180 - 10) + "px";
+
+});
+});
+</script>
+
+<!-- Background Switcher -->
+<script>
+$(document).ready(function(){
+
+$(".bgimg").bgswitcher({
+  images: ["css/images/cropped-red-lores.jpg", "css/images/cropped-orange-lores.jpg", "css/images/cropped-yellow-lores.jpg", "css/images/cropped-green-lores.jpg", "css/images/cropped-blue-lores.jpg"],
+  effect: "fade",
+  interval: 4000,
+  loop: true,
+  shuffle: false,
+  duration: 4000,
+  easing: "swing"
+});
+});
+</script>
+</body>
+</html>
