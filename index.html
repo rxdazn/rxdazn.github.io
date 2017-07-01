@@ -23,29 +23,51 @@ $(document).ready(function(){
 var colorbars = document.querySelector('.colorbars');
 var barbox = document.querySelector('.barbox');
 var output = document.querySelector('.output');
-var maxX = barbox.clientWidth  - colorbars.clientWidth;
-var maxY = barbox.clientHeight - colorbars.clientHeight;
 
+var initialTop = colorbars.offsetTop;
+console.log('initial top', initialTop);
+
+// 3% of screen width
+var maxPositionChange = Math.floor(window.innerWidth * 0.03);
+
+var initialGamma = null;
+var initialBeta = null;
 
   window.addEventListener('deviceorientation', function handleOrientation(event) {
+
+  // we can only get gamma/beta from this call the `deviceorientation` event
+  if ((initialGamma === null && event.gamma !== null) &&
+    (initialBeta === null && event.beta !== null)) {
+      initialGamma = event.gamma;
+      initialBeta = event.beta;
+      console.log('initialGamma', initialGamma);
+      console.log('initialBeta', initialBeta);
+  }
+  console.log('b', event.beta);
+  console.log('g', event.gamma);
 
   var x = event.beta;
   var y = event.gamma;
 
+  var xDelta = initialBeta - event.beta;
+  console.log('xdelta', xDelta);
+
   output.innerHTML  = "beta : " + x + "\n";
   output.innerHTML += "gamma: " + y + "\n";
 
-  if (x >  90) { x =  90};
-  if (x < -90) { x = -90};
-
-
-  x += 90;
-  y += 90;
-
-  colorbars.style.top  = (maxX*x/180 - 10) + "px";
-  colorbars.style.left = (maxY*y/180 - 10) + "px";
-
-});
+  // handling just portrait mode at the moment - holding device as if you were
+  // a picture in portrait mode - doesn't handle device flat on a table yet
+  //
+  // xDelta / 90 calculates how many % off the initialGamma value the current
+  // gamma is (gives a value [0;1])
+  // once we have the percentage we multiply it by the max allowed x position
+  // change
+  var positionXMove = maxPositionChange * (xDelta / 90);
+  var newPositionX = initialTop + positionXMove;
+  console.log('xmove', positionXMove);
+  console.log('new pos', newPositionX);
+  colorbars.style.top  = newPositionX + "px";
+  });
 });
 </script>
 

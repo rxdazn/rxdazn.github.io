@@ -92,9 +92,11 @@ body {
    overflow: hidden;
 }
 
+
 .output {
-  display: none;
+  color: #fff;
 }
+
 
 @font-face {
     font-family: Romic-Medium;
